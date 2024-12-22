@@ -1,0 +1,20 @@
+Dec 23, 2024 3:57:42 AM application.bookstore.Main main
+INFO: Starting APP...
+Dec 23, 2024 3:57:42 AM application.bookstore.Main loadData
+INFO: Loading data Files...
+Dec 23, 2024 3:57:42 AM application.bookstore.models.BaseModel getData
+INFO: End of data/users.ser file reached!
+Dec 23, 2024 3:57:42 AM application.bookstore.models.BaseModel getData
+INFO: End of data/authors.ser file reached!
+Dec 23, 2024 3:57:42 AM application.bookstore.models.BaseModel getData
+INFO: End of data/books.ser file reached!
+Dec 23, 2024 3:57:42 AM application.bookstore.models.BaseModel getData
+INFO: File data/orders.ser not found, the file will be created when data is entered.
+[java.base/java.io.FileInputStream.open0(Native Method), java.base/java.io.FileInputStream.open(Unknown Source), java.base/java.io.FileInputStream.<init>(Unknown Source), application.bookstore/application.bookstore.models.BaseModel.getData(BaseModel.java:25), application.bookstore/application.bookstore.models.Order.getOrders(Order.java:44), application.bookstore/application.bookstore.Main.loadData(Main.java:79), application.bookstore/application.bookstore.Main.main(Main.java:37), java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method), java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source), java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source), java.base/java.lang.reflect.Method.invoke(Unknown Source), javafx.graphics/com.sun.javafx.application.LauncherImpl.launchApplicationWithArgs(LauncherImpl.java:467), javafx.graphics/com.sun.javafx.application.LauncherImpl.launchApplication(LauncherImpl.java:366), java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method), java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source), java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source), java.base/java.lang.reflect.Method.invoke(Unknown Source), java.base/sun.launcher.LauncherHelper$FXHelper.main(Unknown Source)]
+Dec 23, 2024 3:58:03 AM application.bookstore.controllers.LoginController lambda$1
+INFO: Logged in with user: 
+User{
+	"username": admin,
+	"password": ******,
+	"role": ADMIN
+}
