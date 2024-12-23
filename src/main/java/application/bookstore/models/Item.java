@@ -7,13 +7,13 @@ import java.io.Serializable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class Book extends BaseModel<Book> implements Serializable, Cloneable {
+public class Item extends BaseModel<Item> implements Serializable, Cloneable {
     @Serial
     private static final long serialVersionUID = 1234567L;
-    private static final String FILE_PATH = BaseModel.FOLDER_PATH+"books.ser";
+    private static final String FILE_PATH = BaseModel.FOLDER_PATH+"items.ser";
     private static final File DATA_FILE = new File(FILE_PATH);
 
-    private static final ObservableList<Book> books = FXCollections.observableArrayList();
+    private static final ObservableList<Item> items = FXCollections.observableArrayList();
 
     private String isbn;
     private String title;
@@ -22,7 +22,7 @@ public class Book extends BaseModel<Book> implements Serializable, Cloneable {
     private float sellingPrice;
     private Author author;
 
-    public Book(String isbn, String title, int quantity, float purchasedPrice, float sellingPrice, Author author) {
+    public Item(String isbn, String title, int quantity, float purchasedPrice, float sellingPrice, Author author) {
         this.isbn = isbn;
         this.title = title;
         this.purchasedPrice = purchasedPrice;
@@ -31,42 +31,42 @@ public class Book extends BaseModel<Book> implements Serializable, Cloneable {
         this.quantity = quantity;
     }
 
-    public static ObservableList<Book> getBooks() {
-        return getData(DATA_FILE, books);
+    public static ObservableList<Item> getItems() {
+        return getData(DATA_FILE, items);
     }
 
 
     public boolean exists() {
-        for (Book b : books) {
+        for (Item b : items) {
             if (b.getIsbn().equals(this.getIsbn()))
                 return true;
         }
         return false;
     }
 
-    public static ObservableList<Book> getSearchResults(String searchText) {
-        ObservableList<Book> searchResults = FXCollections.observableArrayList();
+    public static ObservableList<Item> getSearchResults(String searchText) {
+        ObservableList<Item> searchResults = FXCollections.observableArrayList();
         searchText = ".*" + searchText.toLowerCase() + ".*";
-        for (Book book : getBooks()) {
-            if (book.getTitle().toLowerCase().matches(searchText))
-                searchResults.add(book);
-            else if (book.getIsbn().toLowerCase().matches(searchText))
-                searchResults.add(book);
-            else if (book.getAuthor().getFullName().toLowerCase().matches(searchText))
-                searchResults.add(book);
+        for (Item item : getItems()) {
+            if (item.getTitle().toLowerCase().matches(searchText))
+                searchResults.add(item);
+            else if (item.getIsbn().toLowerCase().matches(searchText))
+                searchResults.add(item);
+            else if (item.getAuthor().getFullName().toLowerCase().matches(searchText))
+                searchResults.add(item);
         }
         return searchResults;
     }
 
 
     @Override
-    public Book clone() {
-        return new Book(isbn, title, quantity, purchasedPrice, sellingPrice, author.clone());
+    public Item clone() {
+        return new Item(isbn, title, quantity, purchasedPrice, sellingPrice, author.clone());
     }
 
     @Override
     public String toString() {
-        return "\nBook{" +
+        return "\nItem{" +
                 "\n\t\"isbn\": " + getIsbn() +
                 ",\n\t\"title\": " + getTitle() +
                 ",\n\t\"quantity\": " + getQuantity() +
@@ -94,19 +94,19 @@ public class Book extends BaseModel<Book> implements Serializable, Cloneable {
     @Override
     public String saveInFile() {
         if (exists())
-            return "Book with this ISBN exists.";
-        return save(DATA_FILE, books);
+            return "Item with this ISBN exists.";
+        return save(DATA_FILE, items);
     }
 
 
     @Override
     public String deleteFromFile() {
-        return delete(DATA_FILE, books);
+        return delete(DATA_FILE, items);
     }
 
     @Override
-    public String  updateInFile(Book old) {
-        return update(DATA_FILE, books, old);
+    public String  updateInFile(Item old) {
+        return update(DATA_FILE, items, old);
     }
 
     public float getPurchasedPrice() {

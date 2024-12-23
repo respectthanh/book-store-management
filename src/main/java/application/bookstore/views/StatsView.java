@@ -1,9 +1,10 @@
 package application.bookstore.views;
 
-import application.bookstore.controllers.ControllerCommon;
+import java.util.ArrayList;
+import java.util.List;
+
 import application.bookstore.controllers.StatsController;
-import application.bookstore.models.Book;
-import application.bookstore.models.BookOrder;
+import application.bookstore.models.ItemOrder;
 import application.bookstore.models.Order;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -15,11 +16,6 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.logging.Level;
 
 public class StatsView extends View {
 
@@ -38,8 +34,8 @@ public class StatsView extends View {
 
         vBox.getChildren().addAll(new customPieChart(customPieChart.dataOptions.Client_Based_Total_Income),
                 new customPieChart(customPieChart.dataOptions.User_Based_Total_Income),
-                new customPieChart(customPieChart.dataOptions.Book_Based_Total_Income),
-                new customPieChart(customPieChart.dataOptions.Book_Based_Units_Sold));
+                new customPieChart(customPieChart.dataOptions.Item_Based_Total_Income),
+                new customPieChart(customPieChart.dataOptions.Item_Based_Units_Sold));
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(vBox);
@@ -55,8 +51,8 @@ public class StatsView extends View {
         public enum dataOptions{
             Client_Based_Total_Income,
             User_Based_Total_Income,
-            Book_Based_Total_Income,
-            Book_Based_Units_Sold,
+            Item_Based_Total_Income,
+            Item_Based_Units_Sold,
         }
 
         public enum Unit{
@@ -89,10 +85,10 @@ public class StatsView extends View {
                 groupByUser(orders, pieChartData);
             else if (option==dataOptions.Client_Based_Total_Income)
                 groupByClientName(orders, pieChartData);
-            else if (option==dataOptions.Book_Based_Total_Income)
-                incomeGroupByBook(orders, pieChartData);
-            else if (option==dataOptions.Book_Based_Units_Sold)
-                unitsGroupByBook(orders, pieChartData);
+            else if (option==dataOptions.Item_Based_Total_Income)
+                incomeGroupByItem(orders, pieChartData);
+            else if (option==dataOptions.Item_Based_Units_Sold)
+                unitsGroupByItem(orders, pieChartData);
         }
 
         private void addUnit(ObservableList<PieChart.Data> pieChartData, Unit u){
@@ -146,7 +142,7 @@ public class StatsView extends View {
             addUnit(pieChartData, Unit.$);
         }
 
-        private void incomeGroupByBook(List<Order> orders, ObservableList<PieChart.Data> pieChartData){
+        private void incomeGroupByItem(List<Order> orders, ObservableList<PieChart.Data> pieChartData){
             class data {
                 String title;
                 String isbn;
@@ -160,17 +156,17 @@ public class StatsView extends View {
             List<data> data_ = new ArrayList<>();
 
             for (Order o : orders) {
-                for (BookOrder b : o.getBooksOrdered()) {
+                for (ItemOrder b : o.getItemsOrdered()) {
                     boolean match = false;
                     for (data d : data_) {
-                        if (b.getBookISBN().equals(d.isbn)) {
+                        if (b.getItemISBN().equals(d.isbn)) {
                             d.total += b.getTotalPrice();
                             match = true;
                             break;
                         }
                     }
                     if (!match)
-                        data_.add(new data(b.getTitle(), b.getBookISBN(), b.getTotalPrice()));
+                        data_.add(new data(b.getTitle(), b.getItemISBN(), b.getTotalPrice()));
                 }
             }
 
@@ -180,7 +176,7 @@ public class StatsView extends View {
             addUnit(pieChartData, Unit.$);
         }
 
-        private void unitsGroupByBook(List<Order> orders, ObservableList<PieChart.Data> pieChartData){
+        private void unitsGroupByItem(List<Order> orders, ObservableList<PieChart.Data> pieChartData){
             class data {
                 String title;
                 String isbn;
@@ -194,17 +190,17 @@ public class StatsView extends View {
             List<data> data_ = new ArrayList<>();
 
             for (Order o : orders) {
-                for (BookOrder b : o.getBooksOrdered()) {
+                for (ItemOrder b : o.getItemsOrdered()) {
                     boolean match = false;
                     for (data d : data_) {
-                        if (b.getBookISBN().equals(d.isbn)) {
+                        if (b.getItemISBN().equals(d.isbn)) {
                             d.quantity += b.getQuantity();
                             match = true;
                             break;
                         }
                     }
                     if (!match)
-                        data_.add(new data(b.getTitle(), b.getBookISBN(), b.getQuantity()));
+                        data_.add(new data(b.getTitle(), b.getItemISBN(), b.getQuantity()));
                 }
             }
 

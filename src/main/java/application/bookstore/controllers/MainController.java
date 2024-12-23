@@ -55,7 +55,7 @@ public class MainController {
 
         mainView.getMenuItemViewAuthors().setOnAction((e) -> openTab("Authors", new AuthorView().getView()));
 
-        mainView.getMenuItemViewBooks().setOnAction((e) -> openTab("Books", new BookView().getView()));
+        mainView.getMenuItemViewItems().setOnAction((e) -> openTab("Items", new ItemView().getView()));
 
         mainView.getMenuItemViewSales().setOnAction(e -> openTab("Sales", new SalesView(mainStage).getView()));
 

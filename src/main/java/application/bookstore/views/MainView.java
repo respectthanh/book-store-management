@@ -11,7 +11,11 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -22,8 +26,8 @@ public class MainView extends View {
 
     private final MenuBar menuBar = new MenuBar();
 
-    private final Menu booksMenu = new Menu("Books");
-    private final MenuItem menuItemViewBooks = new MenuItem("View Books");
+    private final Menu itemsMenu = new Menu("Items");
+    private final MenuItem menuItemViewItems = new MenuItem("View Items");
     private final MenuItem menuItemViewAuthors = new MenuItem("View Authors");
 
     private final Menu salesMenu = new Menu("_Sales");
@@ -53,9 +57,9 @@ public class MainView extends View {
 
         Role currentRole = (getCurrentUser() != null ? getCurrentUser().getRole() : null);
         if (currentRole != null) {
-            booksMenu.getItems().addAll(menuItemViewBooks, menuItemViewAuthors);
+            itemsMenu.getItems().addAll(menuItemViewItems, menuItemViewAuthors);
             salesMenu.getItems().add(menuItemNewOrder);
-            menuBar.getMenus().addAll(booksMenu, salesMenu);
+            menuBar.getMenus().addAll(itemsMenu, salesMenu);
             menuBar.getMenus().add(controlMenu);
             controlMenu.getItems().addAll(menuItemProfile, menuItemChangePassword);
             if (currentRole == Role.ADMIN) {
@@ -94,12 +98,12 @@ public class MainView extends View {
         return menuBar;
     }
 
-    public Menu getBooksMenu() {
-        return booksMenu;
+    public Menu getItemsMenu() {
+        return itemsMenu;
     }
 
-    public MenuItem getMenuItemViewBooks() {
-        return menuItemViewBooks;
+    public MenuItem getMenuItemViewItems() {
+        return menuItemViewItems;
     }
 
     public MenuItem getMenuItemViewAuthors() {

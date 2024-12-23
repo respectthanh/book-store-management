@@ -1,11 +1,9 @@
 package application.bookstore.models;
 
-import application.bookstore.auxiliaries.TableGenerator;
-import application.bookstore.controllers.ControllerCommon;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
-import java.io.*;
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,6 +11,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
+
+import application.bookstore.auxiliaries.TableGenerator;
+import application.bookstore.controllers.ControllerCommon;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Order extends BaseModel<Order> implements Serializable {
     @Serial
@@ -31,11 +34,11 @@ public class Order extends BaseModel<Order> implements Serializable {
     private String clientName;
     private String username;
     private String date;
-    private ArrayList<BookOrder> booksOrdered;
+    private ArrayList<ItemOrder> itemsOrdered;
 
 
     public Order() {
-        booksOrdered = new ArrayList<>();
+        itemsOrdered = new ArrayList<>();
         UUID uuid = UUID.randomUUID();
         orderID="Order_"+uuid.toString().replaceAll("-", "_");
     }
@@ -59,7 +62,7 @@ public class Order extends BaseModel<Order> implements Serializable {
 
     public float getTotal() {
         float sum = 0;
-        for (BookOrder b : booksOrdered)
+        for (ItemOrder b : itemsOrdered)
             sum += b.getTotalPrice();
         return sum;
     }
@@ -79,13 +82,13 @@ public class Order extends BaseModel<Order> implements Serializable {
         setClientName(clientName);
         LocalDateTime now = LocalDateTime.now();
         setDate(dateFormatter.format(now));
-        for (int i = 0; i < booksOrdered.size(); i++)
-            booksOrdered.set(i, booksOrdered.get(i).clone());// we need to clone them because the originals will be removed from the view and thus unreferenced
+        for (int i = 0; i < itemsOrdered.size(); i++)
+            itemsOrdered.set(i, itemsOrdered.get(i).clone());// we need to clone them because the originals will be removed from the view and thus unreferenced
     }
 
     @Override
     public String toString() {
-        String s = "Thank you from buying from our store!\n\nOrder: " + orderID + "\nDate: " + date + "\nClient: " + clientName + "\nBooks Ordered:";
+        String s = "Thank you from buying from our store!\n\nOrder: " + orderID + "\nDate: " + date + "\nClient: " + clientName + "\nItems Ordered:";
 
         TableGenerator tableGenerator = new TableGenerator();
 
@@ -98,7 +101,7 @@ public class Order extends BaseModel<Order> implements Serializable {
 
         List<List<String>> rowsList = new ArrayList<>();
 
-        for (BookOrder b : booksOrdered) {
+        for (ItemOrder b : itemsOrdered) {
             List<String> row = new ArrayList<>();
             row.add(Integer.toString(b.getQuantity()));
             row.add(b.getTitle());
@@ -116,8 +119,8 @@ public class Order extends BaseModel<Order> implements Serializable {
 
     @Override
     public String isValid() {
-        if (getBooksOrdered().size()==0)
-            return "Please choose at least 1 book.";
+        if (getItemsOrdered().size()==0)
+            return "Please choose at least 1 item.";
         if (!clientName.matches("([a-zA-Z0-9_]{1,30}\\s*)+"))
             return "Client Name must contain 1 to 30 lower/upper case letters numbers spaces or underscore.";
         return "1";
@@ -173,12 +176,12 @@ public class Order extends BaseModel<Order> implements Serializable {
         this.date = date;
     }
 
-    public ArrayList<BookOrder> getBooksOrdered() {
-        return booksOrdered;
+    public ArrayList<ItemOrder> getItemsOrdered() {
+        return itemsOrdered;
     }
 
-    public void setBooksOrdered(ArrayList<BookOrder> booksOrdered) {
-        this.booksOrdered = booksOrdered;
+    public void setItemsOrdered(ArrayList<ItemOrder> itemsOrdered) {
+        this.itemsOrdered = itemsOrdered;
     }
 
 

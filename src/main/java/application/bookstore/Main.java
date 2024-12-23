@@ -10,7 +10,7 @@ import application.bookstore.controllers.ControllerCommon;
 import application.bookstore.controllers.LoginController;
 import application.bookstore.models.Author;
 import application.bookstore.models.BaseModel;
-import application.bookstore.models.Book;
+import application.bookstore.models.Item;
 import application.bookstore.models.Order;
 import application.bookstore.models.Role;
 import application.bookstore.models.User;
@@ -25,7 +25,7 @@ public class Main extends Application {
     public static void main(String[] args) {
         FileHandler fh;
         try {
-            fh = new FileHandler("data/bookstoreLOG.log");
+            fh = new FileHandler("data/itemstoreLOG.log");
             ControllerCommon.LOGGER.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);
@@ -52,21 +52,21 @@ public class Main extends Application {
             ControllerCommon.LOGGER.log(Level.INFO, u.saveInFile());
             Author a = new Author("Albert", "Camus");
             a.saveInFile();
-            Book b = new Book("1234567890120", "The Stranger", 20, 5, 5.2f, a);
+            Item b = new Item("1234567890120", "The Stranger", 20, 5, 5.2f, a);
             b.saveInFile();
-            b = new Book("1234567890121", "The Plague", 8, 7, 7.5f, a);
+            b = new Item("1234567890121", "The Plague", 8, 7, 7.5f, a);
             b.saveInFile();
-            b = new Book("1234567890122", "The Myth of Sisyphus", 10, 6, 6.4f, a);
+            b = new Item("1234567890122", "The Myth of Sisyphus", 10, 6, 6.4f, a);
             b.saveInFile();
-            b = new Book("1234567890123", "The Fall", 14, 5, 5.2f, a);
+            b = new Item("1234567890123", "The Fall", 14, 5, 5.2f, a);
             b.saveInFile();
-            b = new Book("1234567890123", "The Fall", 12, 5, 5.2f, a);
+            b = new Item("1234567890123", "The Fall", 12, 5, 5.2f, a);
             b.saveInFile();
             a=new Author("Fyodor", "Dostoevsky");
             a.saveInFile();
-            b = new Book("1234567890124", "Crime and Punishment", 15, 5, 5.2f, a);
+            b = new Item("1234567890124", "Crime and Punishment", 15, 5, 5.2f, a);
             b.saveInFile();
-            b = new Book("1234567890125", "The Brothers Karamazov", 10, 6, 6.3f, a);
+            b = new Item("1234567890125", "The Brothers Karamazov", 10, 6, 6.3f, a);
             b.saveInFile();
         }
     }
@@ -75,7 +75,7 @@ public class Main extends Application {
         ControllerCommon.LOGGER.info("Loading data Files...");
         User.getUsers();
         Author.getAuthors();
-        Book.getBooks();
+        Item.getItems();
         Order.getOrders();
     }
 
@@ -84,7 +84,7 @@ public class Main extends Application {
         LoginView loginView = new LoginView();
         new LoginController(loginView, stage);
         Scene scene = new Scene(loginView.getView(), MainView.width, MainView.height);
-        stage.setTitle("Bookstore");
+        stage.setTitle("Itemstore");
         stage.setScene(scene);
         stage.show();
     }

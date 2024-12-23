@@ -3,30 +3,30 @@ package application.bookstore.models;
 import java.io.Serial;
 import java.io.Serializable;
 
-// BookOrder keeps the data of the book that is being ordered as well as the quantity being sold
-// This is similar to the Book class, but it also keeps the quantity
+// ItemOrder keeps the data of the item that is being ordered as well as the quantity being sold
+// This is similar to the Item class, but it also keeps the quantity
 // However this class does not use arraylists to save the data since that is a responsibility of Order
-// The BookOrders of an Order are only kept temporary inside the OrderView's second table list
+// The ItemOrders of an Order are only kept temporary inside the OrderView's second table list
 // that list will be cleared when the order is finished
 // this is the reason why we need to make this class (and the classes of the objets used here) cloneable
-public class BookOrder implements Serializable, Cloneable {
+public class ItemOrder implements Serializable, Cloneable {
     @Serial
     private static final long serialVersionUID = 1234567L;
 
-    private transient Book book; // I keep the book only to have it easier to work between the OrderView tables
+    private transient Item item; // I keep the item only to have it easier to work between the OrderView tables
     // this will not be saved on the order file
 
-    private int quantity; // note quantity here is not the stock but the number of this book being sold on this order
-    private String bookISBN; // some data is here mainly for analysis
+    private int quantity; // note quantity here is not the stock but the number of this item being sold on this order
+    private String itemISBN; // some data is here mainly for analysis
     private String title;
     private float unitPrice;
     private float purchasedPrice;
     private Author author;
 
-    public BookOrder(int quantity, Book b) {
-        book = b;
+    public ItemOrder(int quantity, Item b) {
+        item = b;
         this.quantity = quantity;
-        bookISBN = b.getIsbn();
+        itemISBN = b.getIsbn();
         title = b.getTitle();
         unitPrice = b.getSellingPrice();
         author = b.getAuthor();
@@ -40,8 +40,8 @@ public class BookOrder implements Serializable, Cloneable {
 
     // we will need to clone them later on before we remove them from the OrderView table
     @Override
-    public BookOrder clone() {
-        return new BookOrder(quantity, book.clone());
+    public ItemOrder clone() {
+        return new ItemOrder(quantity, item.clone());
     }
 
     public int getQuantity() {
@@ -52,12 +52,12 @@ public class BookOrder implements Serializable, Cloneable {
         this.quantity = quantity;
     }
 
-    public String getBookISBN() {
-        return bookISBN;
+    public String getItemISBN() {
+        return itemISBN;
     }
 
-    public void setBookISBN(String bookISBN) {
-        this.bookISBN = bookISBN;
+    public void setItemISBN(String itemISBN) {
+        this.itemISBN = itemISBN;
     }
 
     public String getTitle() {
@@ -88,8 +88,8 @@ public class BookOrder implements Serializable, Cloneable {
         this.author = author;
     }
 
-    public Book getBook() {
-        return book;
+    public Item getItem() {
+        return item;
     }
 
     public float getPurchasedPrice() {
@@ -100,7 +100,7 @@ public class BookOrder implements Serializable, Cloneable {
         this.purchasedPrice = purchasedPrice;
     }
 
-    public void setBook(Book book){
-        this.book=book;
+    public void setItem(Item item){
+        this.item = item;
     }
 }

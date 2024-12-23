@@ -1,41 +1,41 @@
 package application.bookstore.controllers;
 
 import application.bookstore.models.Author;
-import application.bookstore.models.Book;
+import application.bookstore.models.Item;
 import application.bookstore.models.User;
-import application.bookstore.views.BookView;
+import application.bookstore.views.ItemView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookController {
-    private final BookView view;
+public class ItemController {
+    private final ItemView view;
 
-    public BookController(BookView bookView, boolean customSearch) {
-        this.view = bookView;
+    public ItemController(ItemView itemView, boolean customSearch) {
+        this.view = itemView;
 
         setComboBoxListener();
         if (!customSearch)
             setSearchListener();
 
-        if (bookView.isAllowEdit()) {
+        if (itemView.isAllowEdit()) {
             setSaveListener();
             setDeleteListener();
             setEditListener();
-            bookView.getTableView().setEditable(true);
+            itemView.getTableView().setEditable(true);
         }
     }
 
     private void setSearchListener() {
         view.getSearchView().getClearBtn().setOnAction(e -> {
             view.getSearchView().getSearchField().setText("");
-            view.getTableView().setItems(FXCollections.observableArrayList(Book.getBooks()));
+            view.getTableView().setItems(FXCollections.observableArrayList(Item.getItems()));
         });
         view.getSearchView().getSearchBtn().setOnAction(e -> {
             String searchText = view.getSearchView().getSearchField().getText();
-            ObservableList<Book> searchResults = Book.getSearchResults(searchText);
+            ObservableList<Item> searchResults = Item.getSearchResults(searchText);
             view.getTableView().setItems(searchResults);
         });
     }
@@ -57,26 +57,26 @@ public class BookController {
             float purchasedPrice = Float.parseFloat(view.getPurchasedPriceField().getText());
             float sellingPrice = Float.parseFloat(view.getSellingPriceField().getText());
             Author author = view.getAuthorsComboBox().getValue();
-            Book book = new Book(isbn, title, quantity, purchasedPrice, sellingPrice, author);
+            Item item = new Item(isbn, title, quantity, purchasedPrice, sellingPrice, author);
 
-            String res = book.saveInFile();
+            String res = item.saveInFile();
             if (res.matches("1")) {
-                ControllerCommon.showSuccessMessage(view.getMessageLabel(), "Book created successfully!");
+                ControllerCommon.showSuccessMessage(view.getMessageLabel(), "Item created successfully!");
                 resetFields();
             } else
-                ControllerCommon.showErrorMessage(view.getMessageLabel(), "Book creation failed!\n" + res);
+                ControllerCommon.showErrorMessage(view.getMessageLabel(), "Item creation failed!\n" + res);
         });
     }
 
     private void setDeleteListener() {
         view.getDeleteBtn().setOnAction(e -> {
-            List<Book> itemsToDelete = List.copyOf(view.getTableView().getSelectionModel().getSelectedItems());
-            for (Book b : itemsToDelete) {
+            List<Item> itemsToDelete = List.copyOf(view.getTableView().getSelectionModel().getSelectedItems());
+            for (Item b : itemsToDelete) {
                 String res = b.deleteFromFile();
                 if (res.matches("1")) {
-                    ControllerCommon.showSuccessMessage(view.getMessageLabel(), "Book removed successfully");
+                    ControllerCommon.showSuccessMessage(view.getMessageLabel(), "Item removed successfully");
                 } else {
-                    ControllerCommon.showErrorMessage(view.getMessageLabel(), "Book deletion failed\n"+res);
+                    ControllerCommon.showErrorMessage(view.getMessageLabel(), "Item deletion failed\n"+res);
                     break;
                 }
             }
@@ -85,15 +85,15 @@ public class BookController {
 
     private void setEditListener() {
         view.getIsbnCol().setOnEditCommit(e -> {
-            Book bookToEdit = e.getRowValue();
-            Book editedBook = bookToEdit.clone();
-            editedBook.setIsbn(e.getNewValue());
-            if (!editedBook.getIsbn().equals(bookToEdit.getIsbn())) {
-                if (editedBook.exists()) {
-                    Book.getBooks().set(Book.getBooks().indexOf(bookToEdit), bookToEdit);
-                    ControllerCommon.showErrorMessage(view.getMessageLabel(), "Book with this ISBN Exists!");
+            Item itemToEdit = e.getRowValue();
+            Item editedItem = itemToEdit.clone();
+            editedItem.setIsbn(e.getNewValue());
+            if (!editedItem.getIsbn().equals(itemToEdit.getIsbn())) {
+                if (editedItem.exists()) {
+                    Item.getItems().set(Item.getItems().indexOf(itemToEdit), itemToEdit);
+                    ControllerCommon.showErrorMessage(view.getMessageLabel(), "Item with this ISBN Exists!");
                 } else {
-                    String res = editedBook.updateInFile(bookToEdit);
+                    String res = editedItem.updateInFile(itemToEdit);
                     if (res.matches("1"))
                         ControllerCommon.showSuccessMessage(view.getMessageLabel(), "Edit Successful!");
                     else
@@ -103,10 +103,10 @@ public class BookController {
         });
 
         view.getTitleCol().setOnEditCommit(e -> {
-            Book bookToEdit = e.getRowValue();
-            Book editedBook = bookToEdit.clone();
-            editedBook.setTitle(e.getNewValue());
-            String res = editedBook.updateInFile(bookToEdit);
+            Item itemToEdit = e.getRowValue();
+            Item editedItem = itemToEdit.clone();
+            editedItem.setTitle(e.getNewValue());
+            String res = editedItem.updateInFile(itemToEdit);
             if (res.matches("1"))
                 ControllerCommon.showSuccessMessage(view.getMessageLabel(), "Edit Successful!");
             else
@@ -114,10 +114,10 @@ public class BookController {
         });
 
         view.getQuantityCol().setOnEditCommit(e -> {
-            Book bookToEdit = e.getRowValue();
-            Book editedBook = bookToEdit.clone();
-            editedBook.setQuantity(e.getNewValue());
-            String res = editedBook.updateInFile(bookToEdit);
+            Item itemToEdit = e.getRowValue();
+            Item editedItem = itemToEdit.clone();
+            editedItem.setQuantity(e.getNewValue());
+            String res = editedItem.updateInFile(itemToEdit);
             if (res.matches("1"))
                 ControllerCommon.showSuccessMessage(view.getMessageLabel(), "Edit Successful!");
             else
@@ -125,10 +125,10 @@ public class BookController {
         });
 
         view.getPurchasedPriceCol().setOnEditCommit(e -> {
-            Book bookToEdit = e.getRowValue();
-            Book editedBook = bookToEdit.clone();
-            editedBook.setPurchasedPrice(e.getNewValue());
-            String res = editedBook.updateInFile(bookToEdit);
+            Item itemToEdit = e.getRowValue();
+            Item editedItem = itemToEdit.clone();
+            editedItem.setPurchasedPrice(e.getNewValue());
+            String res = editedItem.updateInFile(itemToEdit);
             if (res.matches("1"))
                 ControllerCommon.showSuccessMessage(view.getMessageLabel(), "Edit Successful!");
             else
@@ -136,10 +136,10 @@ public class BookController {
         });
 
         view.getSellingPriceCol().setOnEditCommit(e -> {
-            Book bookToEdit = e.getRowValue();
-            Book editedBook = bookToEdit.clone();
-            editedBook.setSellingPrice(e.getNewValue());
-            String res = editedBook.updateInFile(bookToEdit);
+            Item itemToEdit = e.getRowValue();
+            Item editedItem = itemToEdit.clone();
+            editedItem.setSellingPrice(e.getNewValue());
+            String res = editedItem.updateInFile(itemToEdit);
             if (res.matches("1"))
                 ControllerCommon.showSuccessMessage(view.getMessageLabel(), "Edit Successful!");
             else

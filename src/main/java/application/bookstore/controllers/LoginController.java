@@ -1,6 +1,7 @@
 package application.bookstore.controllers;
 
-import application.bookstore.Main;
+import java.util.logging.Level;
+
 import application.bookstore.models.User;
 import application.bookstore.views.LoginView;
 import application.bookstore.views.MainView;
@@ -8,8 +9,6 @@ import application.bookstore.views.View;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-
-import java.util.logging.Level;
 
 public class LoginController {
     private final Stage primaryStage;

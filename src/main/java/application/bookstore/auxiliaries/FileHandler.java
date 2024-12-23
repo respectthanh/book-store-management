@@ -1,13 +1,12 @@
 package application.bookstore.auxiliaries;
 
-import application.bookstore.models.BaseModel;
-import javafx.collections.ObservableList;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
+
+import application.bookstore.models.BaseModel;
+import javafx.collections.ObservableList;
 
 public class FileHandler {
 

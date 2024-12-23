@@ -1,16 +1,22 @@
 package application.bookstore.views;
 
-import application.bookstore.controllers.BookController;
+import application.bookstore.controllers.ItemController;
 import application.bookstore.models.Author;
-import application.bookstore.models.Book;
+import application.bookstore.models.Item;
 import application.bookstore.models.Role;
 import application.bookstore.ui.CreateButton;
 import application.bookstore.ui.DeleteButton;
-import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
@@ -21,18 +27,18 @@ import javafx.util.converter.FloatStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
 
-public class BookView extends View {
+public class ItemView extends View {
     private final BorderPane mainPane = new BorderPane();
 
-    private final SearchView searchView = new SearchView("Search for a book");
+    private final SearchView searchView = new SearchView("Search for a item");
 
-    private final TableView<Book> tableView = new TableView<>();
-    private final TableColumn<Book, String> isbnCol = new TableColumn<>("ISBN");
-    private final TableColumn<Book, String> titleCol = new TableColumn<>("Title");
-    private final TableColumn<Book, Integer> quantityCol = new TableColumn<>("Quantity");
-    private final TableColumn<Book, Float> purchasedPriceCol = new TableColumn<>("Purchased Price");
-    private final TableColumn<Book, Float> sellingPriceCol = new TableColumn<>("Selling Price");
-    private final TableColumn<Book, String> authorCol = new TableColumn<>("Author");
+    private final TableView<Item> tableView = new TableView<>();
+    private final TableColumn<Item, String> isbnCol = new TableColumn<>("ISBN");
+    private final TableColumn<Item, String> titleCol = new TableColumn<>("Title");
+    private final TableColumn<Item, Integer> quantityCol = new TableColumn<>("Quantity");
+    private final TableColumn<Item, Float> purchasedPriceCol = new TableColumn<>("Purchased Price");
+    private final TableColumn<Item, Float> sellingPriceCol = new TableColumn<>("Selling Price");
+    private final TableColumn<Item, String> authorCol = new TableColumn<>("Author");
 
     private final HBox formPane = new HBox();
     private final TextField isbnField = new TextField();
@@ -48,15 +54,15 @@ public class BookView extends View {
 
     private final boolean allowEdit;
 
-    public BookView() {
+    public ItemView() {
         this(true, false);
     }
 
-    public BookView(boolean allowEdit, boolean customSearch) {
+    public ItemView(boolean allowEdit, boolean customSearch) {
         this.allowEdit = allowEdit;
         setTableView();
         setForm();
-        new BookController(this, customSearch);
+        new ItemController(this, customSearch);
     }
 
 
@@ -107,7 +113,7 @@ public class BookView extends View {
     private void setTableView() {
         tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         tableView.setEditable(false);
-        tableView.setItems(Book.getBooks());
+        tableView.setItems(Item.getItems());
 
         isbnCol.setCellValueFactory(
                 new PropertyValueFactory<>("isbn")
@@ -150,7 +156,7 @@ public class BookView extends View {
 
 
 
-    public TableView<Book> getTableView() {
+    public TableView<Item> getTableView() {
         return tableView;
     }
 
@@ -182,19 +188,19 @@ public class BookView extends View {
         return deleteBtn;
     }
 
-    public TableColumn<Book, String> getIsbnCol() {
+    public TableColumn<Item, String> getIsbnCol() {
         return isbnCol;
     }
 
-    public TableColumn<Book, String> getTitleCol() {
+    public TableColumn<Item, String> getTitleCol() {
         return titleCol;
     }
 
-    public TableColumn<Book, Float> getPurchasedPriceCol() {
+    public TableColumn<Item, Float> getPurchasedPriceCol() {
         return purchasedPriceCol;
     }
 
-    public TableColumn<Book, Float> getSellingPriceCol() {
+    public TableColumn<Item, Float> getSellingPriceCol() {
         return sellingPriceCol;
     }
 
@@ -206,11 +212,11 @@ public class BookView extends View {
         return quantityField;
     }
 
-    public TableColumn<Book, Integer> getQuantityCol() {
+    public TableColumn<Item, Integer> getQuantityCol() {
         return quantityCol;
     }
 
-    public TableColumn<Book, String> getAuthorCol() {
+    public TableColumn<Item, String> getAuthorCol() {
         return authorCol;
     }
 
