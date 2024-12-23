@@ -52,7 +52,7 @@ public class ManageBooksController {
         try {
             ResultSet rs = DatabaseUtil.getAllBooks();
             while (rs.next()) {
-                tableView.getItems().add(new Book(rs.getInt("id"), rs.getString("bookId"), rs.getString("title"), rs.getString("author"), rs.getDouble("price")));
+                tableView.getItems().add(new Book(rs.getString("isbn"), rs.getString("name"), rs.getString("author"), rs.getDouble("price")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -98,7 +98,7 @@ public class ManageBooksController {
                     String title = titleField.getText();
                     String author = authorField.getText();
                     double price = Double.parseDouble(priceField.getText());
-                    return new Book(0, bookId, title, author, price);
+                    return new Book(bookId, title, author, price);
                 } catch (SQLException e) {
                     e.printStackTrace();
                     return null;
@@ -110,7 +110,7 @@ public class ManageBooksController {
         Optional<Book> result = dialog.showAndWait();
         result.ifPresent(book -> {
             try {
-                DatabaseUtil.createBook(book.getBookId(), book.getTitle(), book.getAuthor(), book.getPrice());
+                DatabaseUtil.createBook(book.getISBN(), book.getName(), book.getAuthor(), book.getPrice());
                 loadBooks();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -135,7 +135,7 @@ public class ManageBooksController {
             grid.setHgap(10);
             grid.setVgap(10);
 
-            TextField titleField = new TextField(selectedBook.getTitle());
+            TextField titleField = new TextField(selectedBook.getName());
             TextField authorField = new TextField(selectedBook.getAuthor());
             TextField priceField = new TextField(String.valueOf(selectedBook.getPrice()));
 
@@ -154,7 +154,7 @@ public class ManageBooksController {
                     String title = titleField.getText();
                     String author = authorField.getText();
                     double price = Double.parseDouble(priceField.getText());
-                    return new Book(selectedBook.getId(), selectedBook.getBookId(), title, author, price);
+                    return new Book(selectedBook.getISBN(), title, author, price);
                 }
                 return null;
             });
@@ -162,7 +162,7 @@ public class ManageBooksController {
             Optional<Book> result = dialog.showAndWait();
             result.ifPresent(book -> {
                 try {
-                    DatabaseUtil.updateBook(book.getId(), book.getTitle(), book.getAuthor(), book.getPrice());
+                    DatabaseUtil.updateBook(book.getISBN(), book.getName(), book.getAuthor(), book.getPrice());
                     loadBooks();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -179,7 +179,7 @@ public class ManageBooksController {
             alert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.YES) {
                     try {
-                        DatabaseUtil.deleteBook(selectedBook.getId());
+                        DatabaseUtil.deleteBook(selectedBook.getISBN());
                         loadBooks();
                     } catch (SQLException e) {
                         e.printStackTrace();

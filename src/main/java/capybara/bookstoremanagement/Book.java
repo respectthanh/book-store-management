@@ -1,40 +1,22 @@
 package capybara.bookstoremanagement;
 
 public class Book extends Item {
-    private int id;
-    private String bookId;
-    private String title;
+    private String isbn;
     private String author;
 
-    public Book(String name, String origin, double price, int quantity, String ISBN) {
-        super(name, origin, price, quantity, ISBN);
-    }
+    public Book() {}
 
-    public Book(int id, String bookId, String title, String author, double price) {
-        this.id = id;
-        this.bookId = bookId;
-        this.title = title;
+    public Book(String isbn, String name, String author, double price) {
+        super("Book", name, price);
+        this.isbn = isbn;
         this.author = author;
-        this.price = price;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getBookId() {
-        return bookId;
-    }
-
-    public String getTitle() {
-        return title;
+    public String getISBN() {
+        return isbn;
     }
 
     public String getAuthor() {
         return author;
-    }
-
-    public double getPrice() {
-        return price;
     }
 }

@@ -91,10 +91,10 @@ public class DatabaseUtil {
         }
     }
 
-    public static void createBook(String bookId, String title, String author, double price) throws SQLException {
-        String sql = "INSERT INTO books(bookId, title, author, price) VALUES(?, ?, ?, ?)";
+    public static void createBook(String isbn, String title, String author, double price) throws SQLException {
+        String sql = "INSERT INTO books(isbn, title, author, price) VALUES(?, ?, ?, ?)";
         try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, bookId);
+            pstmt.setString(1, isbn);
             pstmt.setString(2, title);
             pstmt.setString(3, author);
             pstmt.setDouble(4, price);
@@ -102,7 +102,7 @@ public class DatabaseUtil {
         }
     }
 
-    public static void updateBook(int id, String title, String author, double price) throws SQLException {
+    public static void updateBook(String isbn, String title, String author, double price) throws SQLException {
         String sql = "UPDATE books SET title = ?, author = ?, price = ? WHERE id = ?";
         try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, title);
@@ -113,10 +113,10 @@ public class DatabaseUtil {
         }
     }
 
-    public static void deleteBook(int id) throws SQLException {
-        String sql = "DELETE FROM books WHERE id = ?";
+    public static void deleteBook(String isbn) throws SQLException {
+        String sql = "DELETE FROM books WHERE isbn = ?";
         try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
+            pstmt.setString(1, isbn);
             pstmt.executeUpdate();
         }
     }
@@ -127,10 +127,10 @@ public class DatabaseUtil {
         return conn.createStatement().executeQuery(sql);
     }
 
-    public static boolean isBookIdExists(String bookId) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM books WHERE bookId = ?";
+    public static boolean isBookIdExists(String isbn) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM books WHERE isbn = ?";
         try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, bookId);
+            pstmt.setString(1, isbn);
             ResultSet rs = pstmt.executeQuery();
             rs.next();
             return rs.getInt(1) > 0;
