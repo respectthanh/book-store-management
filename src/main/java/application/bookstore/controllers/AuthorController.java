@@ -55,7 +55,7 @@ public class AuthorController {
 
     private void setDeleteListener() {
         view.getDeleteBtn().setOnAction(e -> {
-            ButtonType answer = new ButtonType("Delete Books");
+            ButtonType answer = new ButtonType("Delete Items");
             ButtonType somethingElse = new ButtonType("Delete Authors Only");
             new DeleteAuthorDialog(view, answer, somethingElse);
             // deletion is handled inside the dialog
