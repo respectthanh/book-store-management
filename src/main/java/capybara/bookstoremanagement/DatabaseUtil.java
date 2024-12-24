@@ -224,7 +224,7 @@ public class DatabaseUtil {
     }
 
     public static void createOrder(String customer, String bookId, int quantity, double totalPrice) throws SQLException {
-        String sql = "INSERT INTO orders(customer, bookId, quantity, totalPrice) VALUES(?, ?, ?, ?)";
+        String sql = "INSERT INTO orders(customerPhone, bookId, quantity, totalPrice) VALUES(?, ?, ?, ?)";
         try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, customer);
             pstmt.setString(2, bookId);
@@ -235,7 +235,7 @@ public class DatabaseUtil {
     }
 
     public static void updateOrder(int id, String customer, String bookId, int quantity, double totalPrice) throws SQLException {
-        String sql = "UPDATE orders SET customer = ?, bookId = ?, quantity = ?, totalPrice = ? WHERE id = ?";
+        String sql = "UPDATE orders SET customerPhone = ?, bookId = ?, quantity = ?, totalPrice = ? WHERE id = ?";
         try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, customer);
             pstmt.setString(2, bookId);
@@ -278,6 +278,32 @@ public class DatabaseUtil {
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 return rs.getDouble("price");
+            } else {
+                throw new SQLException("Book not found");
+            }
+        }
+    }
+
+    public static Customer getCustomerByPhone(String email) throws SQLException {
+        String sql = "SELECT * FROM customers WHERE email = ?";
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new Customer(rs.getInt("id"), rs.getString("name"), rs.getString("email"), rs.getString("phone"));
+            } else {
+                throw new SQLException("Customer not found");
+            }
+        }
+    }
+
+    public static Book getBookById(String bookId) throws SQLException {
+        String sql = "SELECT * FROM books WHERE bookId = ?";
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, bookId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new Book(rs.getInt("id"), rs.getString("bookId"), rs.getString("title"), rs.getString("author"), rs.getDouble("price"));
             } else {
                 throw new SQLException("Book not found");
             }

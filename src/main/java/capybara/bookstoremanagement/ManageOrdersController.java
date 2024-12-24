@@ -39,7 +39,7 @@ public class ManageOrdersController {
     @FXML
     public void initialize() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colCustomer.setCellValueFactory(new PropertyValueFactory<>("customer"));
+        colCustomer.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
         colBookId.setCellValueFactory(new PropertyValueFactory<>("bookId"));
         colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         colTotalPrice.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
@@ -52,7 +52,7 @@ public class ManageOrdersController {
         try {
             ResultSet rs = DatabaseUtil.getAllOrders();
             while (rs.next()) {
-                tableView.getItems().add(new Order(rs.getInt("id"), rs.getString("customer"), rs.getString("bookId"), rs.getInt("quantity"), rs.getDouble("totalPrice")));
+                tableView.getItems().add(new Order(rs.getInt("id"), rs.getString("customerPhone"), rs.getString("bookId"), rs.getInt("quantity"), rs.getDouble("totalPrice")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -69,7 +69,7 @@ public class ManageOrdersController {
         ButtonType addButtonType = new ButtonType("Add", ButtonType.OK.getButtonData());
         dialog.getDialogPane().getButtonTypes().addAll(addButtonType, ButtonType.CANCEL);
 
-        // Create the customer, bookId, and quantity labels and fields
+        // Create the customer, bookId, quantity, and email labels and fields
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -101,8 +101,15 @@ public class ManageOrdersController {
             if (dialogButton == addButtonType) {
                 String customer = customerField.getText();
                 String bookId = bookIdField.getText();
-                int quantity = Integer.parseInt(quantityField.getText());
-                double totalPrice = Double.parseDouble(totalPriceLabel.getText().replace("Total Price: $", ""));
+                int quantity;
+                double totalPrice;
+                try {
+                    quantity = Integer.parseInt(quantityField.getText());
+                    totalPrice = Double.parseDouble(totalPriceLabel.getText().replace("Total Price: $", "").replace(",", ""));
+                } catch (NumberFormatException e) {
+                    showAlert(Alert.AlertType.ERROR, "Invalid Input", "Please enter valid numbers for quantity and total price.");
+                    return null;
+                }
                 return new Order(0, customer, bookId, quantity, totalPrice);
             }
             return null;
@@ -111,7 +118,7 @@ public class ManageOrdersController {
         Optional<Order> result = dialog.showAndWait();
         result.ifPresent(order -> {
             try {
-                DatabaseUtil.createOrder(order.getCustomer(), order.getBookId(), order.getQuantity(), order.getTotalPrice());
+                DatabaseUtil.createOrder(order.getCustomerPhone(), order.getBookId(), order.getQuantity(), order.getTotalPrice());
                 loadOrders();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -131,6 +138,14 @@ public class ManageOrdersController {
         }
     }
 
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     @FXML
     private void handleEditOrder(ActionEvent event) {
         Order selectedOrder = tableView.getSelectionModel().getSelectedItem();
@@ -143,12 +158,12 @@ public class ManageOrdersController {
             ButtonType editButtonType = new ButtonType("Save", ButtonType.OK.getButtonData());
             dialog.getDialogPane().getButtonTypes().addAll(editButtonType, ButtonType.CANCEL);
 
-            // Create the customer, bookId, and quantity labels and fields
+            // Create the customer, bookId, quantity, and email labels and fields
             GridPane grid = new GridPane();
             grid.setHgap(10);
             grid.setVgap(10);
 
-            TextField customerField = new TextField(selectedOrder.getCustomer());
+            TextField customerField = new TextField(selectedOrder.getCustomerPhone());
             TextField bookIdField = new TextField(selectedOrder.getBookId());
             TextField quantityField = new TextField(String.valueOf(selectedOrder.getQuantity()));
             Label totalPriceLabel = new Label(String.format("Total Price: $%.2f", selectedOrder.getTotalPrice()));
@@ -172,8 +187,15 @@ public class ManageOrdersController {
                 if (dialogButton == editButtonType) {
                     String customer = customerField.getText();
                     String bookId = bookIdField.getText();
-                    int quantity = Integer.parseInt(quantityField.getText());
-                    double totalPrice = Double.parseDouble(totalPriceLabel.getText().replace("Total Price: $", ""));
+                    int quantity;
+                    double totalPrice;
+                    try {
+                        quantity = Integer.parseInt(quantityField.getText());
+                        totalPrice = Double.parseDouble(totalPriceLabel.getText().replace("Total Price: $", "").replace(",", ""));
+                    } catch (NumberFormatException e) {
+                        showAlert(Alert.AlertType.ERROR, "Invalid Input", "Please enter valid numbers for quantity and total price.");
+                        return null;
+                    }
                     return new Order(selectedOrder.getId(), customer, bookId, quantity, totalPrice);
                 }
                 return null;
@@ -182,7 +204,7 @@ public class ManageOrdersController {
             Optional<Order> result = dialog.showAndWait();
             result.ifPresent(order -> {
                 try {
-                    DatabaseUtil.updateOrder(order.getId(), order.getCustomer(), order.getBookId(), order.getQuantity(), order.getTotalPrice());
+                    DatabaseUtil.updateOrder(order.getId(), order.getCustomerPhone(), order.getBookId(), order.getQuantity(), order.getTotalPrice());
                     loadOrders();
                 } catch (SQLException e) {
                     e.printStackTrace();
