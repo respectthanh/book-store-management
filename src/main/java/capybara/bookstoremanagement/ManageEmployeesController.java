@@ -1,11 +1,15 @@
 package capybara.bookstoremanagement;
 
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Optional;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -15,31 +19,27 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
-
-import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Optional;
+import javafx.stage.Stage;
 
 public class ManageEmployeesController {
 
     @FXML
     private TableView<Employee> tableView;
     @FXML
-    private TableColumn<Employee, Integer> colId;
+    private TableColumn<Book, Integer> colId;
     @FXML
-    private TableColumn<Employee, String> colName;
+    private TableColumn<Employee, String> colUsername;
     @FXML
-    private TableColumn<Employee, String> colPosition;
+    private TableColumn<Employee, String> colPassword;
     @FXML
-    private TableColumn<Employee, Double> colSalary;
+    private TableColumn<Employee, String> colRole;
 
     @FXML
     public void initialize() {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colPosition.setCellValueFactory(new PropertyValueFactory<>("position"));
-        colSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+        colUsername.setCellValueFactory(new PropertyValueFactory<>("username"));
+        colPassword.setCellValueFactory(new PropertyValueFactory<>("password"));
+        colRole.setCellValueFactory(new PropertyValueFactory<>("role"));
 
         loadEmployees();
     }
@@ -49,7 +49,7 @@ public class ManageEmployeesController {
         try {
             ResultSet rs = DatabaseUtil.getAllEmployees();
             while (rs.next()) {
-                tableView.getItems().add(new Employee(rs.getInt("id"), rs.getString("name"), rs.getString("position"), rs.getDouble("salary")));
+                tableView.getItems().add(new Employee(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("role")));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -71,29 +71,29 @@ public class ManageEmployeesController {
         grid.setHgap(10);
         grid.setVgap(10);
 
-        TextField nameField = new TextField();
-        nameField.setPromptText("Name");
-        TextField positionField = new TextField();
-        positionField.setPromptText("Position");
-        TextField salaryField = new TextField();
-        salaryField.setPromptText("Salary");
+        TextField usernameField = new TextField();
+        usernameField.setPromptText("Username");
+        TextField passwordField = new TextField();
+        passwordField.setPromptText("Password");
+        TextField roleField = new TextField();
+        roleField.setPromptText("Role");
 
-        grid.add(new Label("Name:"), 0, 0);
-        grid.add(nameField, 1, 0);
-        grid.add(new Label("Position:"), 0, 1);
-        grid.add(positionField, 1, 1);
-        grid.add(new Label("Salary:"), 0, 2);
-        grid.add(salaryField, 1, 2);
+        grid.add(new Label("Username:"), 0, 0);
+        grid.add(usernameField, 1, 0);
+        grid.add(new Label("Password:"), 0, 1);
+        grid.add(passwordField, 1, 1);
+        grid.add(new Label("Role:"), 0, 2);
+        grid.add(roleField, 1, 2);
 
         dialog.getDialogPane().setContent(grid);
 
         // Convert the result to an Employee object when the Add button is clicked
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == addButtonType) {
-                String name = nameField.getText();
-                String position = positionField.getText();
-                double salary = Double.parseDouble(salaryField.getText());
-                return new Employee(0, name, position, salary);
+                String username = usernameField.getText();
+                String password = passwordField.getText();
+                String role = roleField.getText();
+                return new Employee(0, username, password, role);
             }
             return null;
         });
@@ -101,9 +101,8 @@ public class ManageEmployeesController {
         Optional<Employee> result = dialog.showAndWait();
         result.ifPresent(employee -> {
             try {
-                DatabaseUtil.createEmployee(employee.getName(), employee.getPosition(), employee.getSalary());
-                loadEmployees();
-            } catch (SQLException e) {
+                DatabaseUtil.createUser(employee.getUsername(), employee.getPassword(), employee.getRole());
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
@@ -126,26 +125,26 @@ public class ManageEmployeesController {
             grid.setHgap(10);
             grid.setVgap(10);
 
-            TextField nameField = new TextField(selectedEmployee.getName());
-            TextField positionField = new TextField(selectedEmployee.getPosition());
-            TextField salaryField = new TextField(String.valueOf(selectedEmployee.getSalary()));
+            TextField usernameField = new TextField(selectedEmployee.getUsername());
+            TextField passwordField = new TextField(selectedEmployee.getPassword());
+            TextField roleField = new TextField(selectedEmployee.getRole());
 
-            grid.add(new Label("Name:"), 0, 0);
-            grid.add(nameField, 1, 0);
-            grid.add(new Label("Position:"), 0, 1);
-            grid.add(positionField, 1, 1);
-            grid.add(new Label("Salary:"), 0, 2);
-            grid.add(salaryField, 1, 2);
+            grid.add(new Label("Username:"), 0, 0);
+            grid.add(usernameField, 1, 0);
+            grid.add(new Label("Password:"), 0, 1);
+            grid.add(passwordField, 1, 1);
+            grid.add(new Label("Role:"), 0, 2);
+            grid.add(roleField, 1, 2);
 
             dialog.getDialogPane().setContent(grid);
 
             // Convert the result to an Employee object when the Save button is clicked
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == editButtonType) {
-                    String name = nameField.getText();
-                    String position = positionField.getText();
-                    double salary = Double.parseDouble(salaryField.getText());
-                    return new Employee(selectedEmployee.getId(), name, position, salary);
+                    String username = usernameField.getText();
+                    String password = passwordField.getText();
+                    String role = roleField.getText();
+                    return new Employee(selectedEmployee.getId(), username, password, role);
                 }
                 return null;
             });

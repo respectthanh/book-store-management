@@ -9,9 +9,9 @@
         <TableView fx:id="tableView" layoutX="20" layoutY="60" prefWidth="600" prefHeight="400">
             <columns>
                 <TableColumn fx:id="colId" text="ID" prefWidth="100"/>
-                <TableColumn fx:id="colName" text="Name" prefWidth="200"/>
-                <TableColumn fx:id="colPosition" text="Position" prefWidth="200"/>
-                <TableColumn fx:id="colSalary" text="Salary" prefWidth="100"/>
+                <TableColumn fx:id="colUsername" text="Username" prefWidth="200"/>
+                <TableColumn fx:id="colPassword" text="Password" prefWidth="200"/>
+                <TableColumn fx:id="colRole" text="Role" prefWidth="100"/>
             </columns>
         </TableView>
         <HBox layoutX="20" layoutY="480" spacing="20">
