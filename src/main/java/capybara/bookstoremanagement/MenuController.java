@@ -21,7 +21,7 @@ public class MenuController {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("manage_books.fxml"));
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root, 640, 540));
+            stage.setScene(new Scene(root, 1080, 640));
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -33,7 +33,7 @@ public class MenuController {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("manage_customers.fxml"));
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root, 640, 540));
+            stage.setScene(new Scene(root, 1080, 640));
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,7 +62,7 @@ public class MenuController {
                 try {
                     Parent root = FXMLLoader.load(getClass().getResource("manage_employees.fxml"));
                     Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-                    stage.setScene(new Scene(root, 640, 540));
+                    stage.setScene(new Scene(root, 1080, 640));
                     stage.show();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -83,7 +83,7 @@ public class MenuController {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("manage_orders.fxml"));
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root, 640, 540));
+            stage.setScene(new Scene(root, 1080, 640));
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -95,7 +95,7 @@ public class MenuController {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("manage_items.fxml"));
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root, 640, 540));
+            stage.setScene(new Scene(root, 1080, 640));
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();

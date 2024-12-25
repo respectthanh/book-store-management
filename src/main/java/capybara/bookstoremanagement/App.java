@@ -19,7 +19,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         DatabaseUtil.createTables();
 
-        scene = new Scene(loadFXML("login"), 640, 480);
+        scene = new Scene(loadFXML("login"), 1080, 640);
         stage.setScene(scene);
         stage.setTitle("Book Store Management System");
         stage.show();

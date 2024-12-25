@@ -6,10 +6,10 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="capybara.bookstoremanagement.ManageToysController">
     <children>
         <Label text="Manage Toys" layoutX="20" layoutY="20"/>
-        <TableView fx:id="tableView" layoutX="20" layoutY="60" prefWidth="600" prefHeight="400">
+        <TableView fx:id="tableView" layoutX="90" layoutY="60" prefWidth="900" prefHeight="400">
             <columns>
                 <TableColumn fx:id="colId" text="ID" prefWidth="100"/>
-                <TableColumn fx:id="colName" text="Name" prefWidth="100"/>
+                <TableColumn fx:id="colName" text="Name" prefWidth="300"/>
                 <TableColumn fx:id="colOrigin" text="Origin" prefWidth="200"/>
                 <TableColumn fx:id="colAgeLimit" text="Age Limit" prefWidth="200"/>
                 <TableColumn fx:id="colPrice" text="Price" prefWidth="100"/>
