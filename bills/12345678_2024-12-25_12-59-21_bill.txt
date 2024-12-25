@@ -1,0 +1,6 @@
+Bill for customer: 12345678
+Time created: 2024-12-25 12:59:21
+Books:
+ID: ST-2922-X, Title: Marker, Quantity: 2
+ID: TOY-6413-E, Title: Lego Set, Quantity: 1
+Total Price: $114,60

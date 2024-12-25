@@ -8,7 +8,7 @@
         <Label text="Manage Books" layoutX="20" layoutY="20"/>
 <TableView fx:id="tableView" layoutX="90" layoutY="60" prefWidth="900" prefHeight="400">            <columns>
                 <TableColumn fx:id="colId" text="ID" prefWidth="100"/>
-                <TableColumn fx:id="colBookId" text="Book ID" prefWidth="100"/>
+                <TableColumn fx:id="colitemid" text="Book ID" prefWidth="100"/>
                 <TableColumn fx:id="colTitle" text="Title" prefWidth="400"/>
                 <TableColumn fx:id="colAuthor" text="Author" prefWidth="200"/>
                 <TableColumn fx:id="colPrice" text="Price" prefWidth="100"/>
