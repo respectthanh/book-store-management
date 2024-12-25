@@ -8,6 +8,12 @@ public class Bill {
     private Map<String, String> bookTitles;
     private double totalPrice;
 
+    public Bill(String customer, Map< String, Integer> books, double totalPrice) {
+        this.customer = customer;
+        this.books = books;
+        this.totalPrice = totalPrice;
+    }
+
     public Bill(String customer, Map<String, Integer> books, Map<String, String> bookTitles, double totalPrice) {
         this.customer = customer;
         this.books = books;
